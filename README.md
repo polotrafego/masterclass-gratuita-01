@@ -1,7 +1,7 @@
 # Masterclass gratuita — Dennis Penna
 
 LP de captura de leads da masterclass **"Palestrante, onde você está travando?"**, na identidade da Palestras Academy.
-Publicada em **palestrasacademy.com.br/masterclass**.
+Publicada em **www.palestras.academy/masterclass**.
 
 ## Estrutura
 
@@ -47,14 +47,14 @@ Variáveis de ambiente na Vercel (Settings → Environment Variables):
 
 Sem token ou funil a API responde 503 e o formulário mostra "inscrições temporariamente indisponíveis".
 
-## Servir em palestrasacademy.com.br/masterclass
+## Servir em www.palestras.academy/masterclass
 
 Este repo é um projeto próprio na Vercel. O projeto `palestrasacademy` repassa o caminho para ele
 com duas regras de rewrite (Project → Settings → Routing, ou `vercel.json`):
 
 ```
-/masterclass           → https://<projeto-masterclass>.vercel.app/masterclass
-/masterclass/:path*    → https://<projeto-masterclass>.vercel.app/masterclass/:path*
+/masterclass           → https://masterclass-gratuita-01.vercel.app/masterclass
+/masterclass/:path*    → https://masterclass-gratuita-01.vercel.app/masterclass/:path*
 ```
 
 ## Eventos de conversão
