@@ -110,7 +110,7 @@
   noScroll();
 
   /* ─── Todo CTA leva ao formulário e põe o cursor no primeiro campo ─── */
-  const card = document.querySelector(".card");
+  const card = document.querySelector(".form-box");
   const form = document.getElementById("lead-form");
   const campoNome = document.getElementById("f-nome");
   document.querySelectorAll("[data-cta]").forEach((a) =>
