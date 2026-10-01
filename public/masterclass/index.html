@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Masterclass gratuita com Dennis Penna | Palestras Academy</title>
   <meta name="description" content="Palestrante, onde você está travando? Uma análise dos 4 perfis mais comuns de palestrantes e seus principais pontos cegos. Aula online, ao vivo e gratuita com Dennis Penna." />
-  <meta name="theme-color" content="#050505" />
+  <meta name="theme-color" content="#18131f" />
   <link rel="canonical" href="https://www.palestras.academy/masterclass" />
 
   <meta property="og:type" content="website" />
@@ -22,108 +22,147 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Lora:ital,wght@1,500&display=swap" rel="stylesheet" />
-  <link rel="preload" as="image" href="/masterclass/img/dennis-hero.webp" fetchpriority="high" />
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet" />
+  <link rel="preload" as="image" href="/masterclass/img/dennis-hero-recorte.webp" fetchpriority="high" />
   <link rel="stylesheet" href="/masterclass/styles.css" />
 </head>
 <body>
   <a class="skip" href="#inscricao">Pular para a inscrição</a>
+  <div class="progress" aria-hidden="true"><span id="progress"></span></div>
+
+  <!-- Barra que aparece ao rolar -->
+  <div class="topbar" id="topbar" aria-hidden="true">
+    <div class="wrap topbar__inner">
+      <img src="/masterclass/img/logo-palestras-academy.svg" alt="" width="120" height="41" />
+      <p class="topbar__info"><span data-cfg="data">[DATA]</span> às <span data-cfg="horario">[HORÁRIO]</span> · Online e gratuita</p>
+      <a class="btn btn--sm" href="#inscricao" data-cta tabindex="-1">Garantir vaga</a>
+    </div>
+  </div>
 
   <!-- ═════════════ DOBRA 1 — HERO ═════════════ -->
-  <header class="hero">
-    <div class="hero__media" aria-hidden="true">
-      <img src="/masterclass/img/dennis-hero.webp" alt="" width="1535" height="1024" fetchpriority="high" />
-    </div>
-    <div class="hero__deco" aria-hidden="true">
-      <span class="sq sq--a"></span>
-      <span class="sq sq--b"></span>
-      <span class="sq sq--c"></span>
-      <span class="sq sq--d"></span>
-      <span class="line line--a"></span>
+  <header class="hero" id="topo">
+    <div class="hero__bg" aria-hidden="true">
+      <span class="glow glow--a"></span>
+      <span class="glow glow--b"></span>
     </div>
 
-    <div class="wrap hero__inner">
-      <a class="logo" href="https://www.palestras.academy" aria-label="Palestras Academy — página inicial">
-        <img src="/masterclass/img/logo-palestras-academy.svg" alt="Palestras Academy" width="160" height="54" />
-      </a>
-
+    <div class="wrap hero__grid">
       <div class="hero__content">
-        <p class="badge reveal">Aula online e <strong>gratuita</strong></p>
-        <h1 class="hero__title reveal">
-          <span>Palestrante,</span>
-          <span class="accent">onde você está</span>
-          <span>travando?</span>
-        </h1>
-        <p class="hero__sub reveal">Uma análise dos 4 perfis mais comuns de palestrantes e seus principais pontos cegos.</p>
+        <a class="hero__logo" href="https://www.palestras.academy" aria-label="Palestras Academy — página inicial">
+          <img src="/masterclass/img/logo-palestras-academy.svg" alt="Palestras Academy" width="168" height="57" />
+        </a>
 
-        <ul class="chips reveal" aria-label="Informações da aula">
-          <li class="chip">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4.5" width="18" height="16" rx="2"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4"/></svg>
-            <span><span data-cfg="data">[DATA]</span> às <span data-cfg="horario">[HORÁRIO]</span></span>
-          </li>
-          <li class="chip">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m16 13 5.2 3.5a.5.5 0 0 0 .8-.4V7.9a.5.5 0 0 0-.8-.4L16 11"/><rect x="2" y="6" width="14" height="12" rx="2"/></svg>
-            <span>Aula online e gratuita</span>
-          </li>
+        <p class="eyebrow up">Aula online e gratuita</p>
+
+        <h1 class="hero__title up">
+          <span class="t-line">Palestrante,</span>
+          <span class="t-line t-grad">onde você está travando?</span>
+        </h1>
+
+        <p class="hero__sub up">Uma análise dos <strong>4 perfis</strong> mais comuns de palestrantes e seus principais <strong>pontos&nbsp;cegos</strong>.</p>
+
+        <ul class="pills up" aria-label="Informações da aula">
+          <li class="pill"><span><span data-cfg="data">[DATA]</span> às <span data-cfg="horario">[HORÁRIO]</span></span></li>
+          <li class="pill">Aula online e gratuita</li>
         </ul>
 
-        <a class="btn reveal" href="#inscricao" data-cta>Inscreva-se <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <a class="btn btn--lg up" href="#inscricao" data-cta>
+          Inscreva-se
+          <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
       </div>
 
-      <ul class="hero__pillars" aria-hidden="true">
-        <li>Autoridade</li>
-        <li>Visibilidade</li>
-        <li>Posicionamento</li>
-        <li>Mercado</li>
-      </ul>
+      <div class="hero__visual" aria-hidden="true">
+        <span class="rings">
+          <span class="ring ring--1"></span>
+          <span class="ring ring--2"><i></i></span>
+          <span class="ring ring--3"><i></i></span>
+        </span>
+        <span class="halo"></span>
+        <img class="hero__photo" src="/masterclass/img/dennis-hero-recorte.webp" alt="" width="1098" height="1024" fetchpriority="high" data-parallax="0.06" />
 
-      <p class="hero__name" aria-hidden="true"><span></span>Dennis Penna</p>
+        <span class="float float--a" data-parallax="-0.10">
+          <svg class="ico" viewBox="0 0 24 24"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0 0 14 0M12 17v5M8 22h8"/></svg>
+        </span>
+        <span class="float float--b" data-parallax="-0.16">
+          <svg class="ico" viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8"/><path d="M14 7h7v7"/></svg>
+        </span>
+        <span class="float float--c" data-parallax="-0.08">
+          <svg class="ico" viewBox="0 0 24 24"><path d="m16 13 5.2 3.5a.5.5 0 0 0 .8-.4V7.9a.5.5 0 0 0-.8-.4L16 11"/><rect x="2" y="6" width="14" height="12" rx="2"/></svg>
+        </span>
+
+        <p class="nametag">
+          <span class="nametag__first">Dennis</span>
+          <span class="nametag__arrow"><svg class="ico" viewBox="0 0 24 24"><path d="M7 17 17 7M8 7h9v9"/></svg></span>
+          <span class="nametag__last">Penna</span>
+        </p>
+      </div>
     </div>
+
   </header>
+
+  <!-- Faixa deslizante: os quatro pilares, repetidos -->
+  <section class="ticker" aria-label="Autoridade, Visibilidade, Posicionamento e Mercado">
+    <div class="ticker__row ticker__row--a" aria-hidden="true">
+      <div class="ticker__track">
+        <div class="ticker__group">
+          <span>Autoridade</span><i></i><span>Visibilidade</span><i></i><span>Posicionamento</span><i></i><span>Mercado</span><i></i>
+          <span>Autoridade</span><i></i><span>Visibilidade</span><i></i><span>Posicionamento</span><i></i><span>Mercado</span><i></i>
+        </div>
+      </div>
+    </div>
+    <div class="ticker__row ticker__row--b" aria-hidden="true">
+      <div class="ticker__track ticker__track--rev">
+        <div class="ticker__group">
+          <span>Mercado</span><i></i><span>Posicionamento</span><i></i><span>Visibilidade</span><i></i><span>Autoridade</span><i></i>
+          <span>Mercado</span><i></i><span>Posicionamento</span><i></i><span>Visibilidade</span><i></i><span>Autoridade</span><i></i>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <main>
     <!-- ═════════════ DOBRA 2 — CONTEÚDO + FORMULÁRIO ═════════════ -->
     <section class="learn" aria-labelledby="learn-title">
       <div class="wrap learn__grid">
         <div class="learn__content">
-          <span class="kicker-bar" aria-hidden="true"></span>
-          <h2 id="learn-title" class="title-xl reveal">Entenda o que pode estar impedindo sua carreira de avançar</h2>
-          <p class="learn__lead reveal">Na masterclass com <strong>Dennis Penna</strong>, você vai aprender a identificar:</p>
+          <h2 id="learn-title" class="h2 up">Entenda o que pode estar impedindo sua <span class="hl">carreira de avançar</span></h2>
+          <p class="h3 up">Na masterclass com Dennis Penna, você vai aprender a identificar:</p>
 
           <ol class="items">
-            <li class="item reveal">
+            <li class="item up">
               <span class="item__icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.2" class="fill"/></svg>
+                <svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.3" class="fill"/></svg>
               </span>
-              <div>
-                <h3><span class="item__n">01.</span> Qual dos 4 perfis mais se aproxima do seu momento atual</h3>
-                <p>E o que esse perfil revela sobre sua carreira.</p>
+              <div class="item__text">
+                <p><strong>Qual dos 4 perfis</strong> mais se aproxima do seu momento atual;</p>
+                <p class="item__sub">E o que esse perfil revela sobre sua carreira.</p>
               </div>
             </li>
-            <li class="item reveal">
+            <li class="item up">
               <span class="item__icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg>
+                <svg class="ico" viewBox="0 0 24 24"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg>
               </span>
-              <div>
-                <h3><span class="item__n">02.</span> Onde estão os principais pontos cegos</h3>
-                <p>Produto, autoridade, visibilidade ou estrutura comercial?</p>
+              <div class="item__text">
+                <p>Onde estão os <strong>principais pontos cegos</strong>;</p>
+                <p class="item__sub">Produto, autoridade, visibilidade ou estrutura comercial?</p>
               </div>
             </li>
-            <li class="item reveal">
+            <li class="item up">
               <span class="item__icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24"><path d="M5 20V14M12 20V9M19 20V4"/></svg>
+                <svg class="ico" viewBox="0 0 24 24"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0 0 14 0M12 17v5M8 22h8"/></svg>
               </span>
-              <div>
-                <h3><span class="item__n">03.</span> Por que ser bom no palco não é suficiente</h3>
-                <p>E como diferentes desequilíbrios podem limitar seus resultados.</p>
+              <div class="item__text">
+                <p>Por que <strong>ser bom no palco não é suficiente</strong>;</p>
+                <p class="item__sub">E como diferentes desequilíbrios podem limitar seus resultados.</p>
               </div>
             </li>
-            <li class="item reveal">
+            <li class="item up">
               <span class="item__icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2.1 4.9-4.9 2.1 2.1-4.9 4.9-2.1Z"/></svg>
+                <svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2.1 4.9-4.9 2.1 2.1-4.9 4.9-2.1Z"/></svg>
               </span>
-              <div>
-                <h3><span class="item__n">04.</span> Qual movimento sua carreira pode estar pedindo agora</h3>
+              <div class="item__text">
+                <p>Qual <strong>movimento sua carreira</strong> pode estar pedindo agora.</p>
                 <ul class="tags" aria-label="Possíveis movimentos">
                   <li>Mais visibilidade?</li>
                   <li>Mais autoridade?</li>
@@ -136,37 +175,25 @@
         </div>
 
         <aside class="form-col" id="inscricao" aria-labelledby="form-title">
-          <div class="card">
+          <div class="card up">
             <div class="card__head">
-              <h2 id="form-title">Garanta sua vaga</h2>
-              <p>Preencha o formulário e garanta sua vaga na masterclass!</p>
+              <h2 id="form-title">Preencha o formulário e garanta sua vaga na masterclass!</h2>
             </div>
 
             <form class="form" id="lead-form" novalidate>
               <div class="field">
-                <label for="f-nome">Nome completo</label>
-                <div class="field__box">
-                  <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
-                  <input id="f-nome" name="nome" type="text" autocomplete="name" placeholder="Seu nome completo" required minlength="3" maxlength="120" />
-                </div>
+                <label class="sr" for="f-nome">Nome completo</label>
+                <input id="f-nome" name="nome" type="text" autocomplete="name" placeholder="Nome completo *" required maxlength="120" />
                 <p class="field__err" id="e-nome" role="alert"></p>
               </div>
-
               <div class="field">
-                <label for="f-email">E-mail</label>
-                <div class="field__box">
-                  <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="4.5" width="19" height="15" rx="2"/><path d="m3 6 9 7 9-7"/></svg>
-                  <input id="f-email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="seu@email.com" required maxlength="255" />
-                </div>
+                <label class="sr" for="f-email">E-mail</label>
+                <input id="f-email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="E-mail *" required maxlength="255" />
                 <p class="field__err" id="e-email" role="alert"></p>
               </div>
-
               <div class="field">
-                <label for="f-whatsapp">WhatsApp</label>
-                <div class="field__box">
-                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 20.5 5 16.3A8.5 8.5 0 1 1 8 19.2Z"/><path d="M9 8.6c0 3.4 3 6.4 6.4 6.4l1.1-1.4-1.9-1-1 .9a4.6 4.6 0 0 1-3-3l.9-1-1-1.9Z" class="fill"/></svg>
-                  <input id="f-whatsapp" name="whatsapp" type="tel" inputmode="tel" autocomplete="tel-national" placeholder="(11) 99999-9999" required maxlength="20" />
-                </div>
+                <label class="sr" for="f-whatsapp">WhatsApp</label>
+                <input id="f-whatsapp" name="whatsapp" type="tel" inputmode="tel" autocomplete="tel-national" placeholder="WhatsApp com DDD *" required maxlength="20" />
                 <p class="field__err" id="e-whatsapp" role="alert"></p>
               </div>
 
@@ -178,33 +205,26 @@
 
               <button class="btn btn--block" type="submit">
                 <span class="btn__label">Quero participar</span>
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
                 <span class="btn__spinner" aria-hidden="true"></span>
               </button>
 
               <p class="form__status" id="form-status" role="status" aria-live="polite"></p>
 
               <p class="form__note">Masterclass online, ao vivo e gratuita.</p>
-              <p class="form__legal">
-                <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4.5" y="10.5" width="15" height="10" rx="2"/><path d="M8 10.5V7a4 4 0 0 1 8 0v3.5"/></svg>
-                Seus dados estão seguros. Não enviamos spam. Ao se inscrever, você concorda com a
-                <a href="https://www.palestras.academy/politica-de-privacidade" target="_blank" rel="noopener">Política de Privacidade</a>.
-              </p>
+              <p class="form__legal">Prometemos não utilizar suas informações de contato para enviar qualquer tipo de spam. Ao se inscrever, você concorda com a <a href="https://www.palestras.academy/politica-de-privacidade" target="_blank" rel="noopener">Política de Privacidade</a>.</p>
             </form>
 
             <div class="success" id="form-success" hidden tabindex="-1">
               <span class="success__icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>
+                <svg class="ico" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>
               </span>
               <h3>Inscrição confirmada!</h3>
               <p>Sua vaga está garantida, <strong data-nome></strong>. Você vai receber no e-mail e no WhatsApp o link da aula e os lembretes.</p>
-              <p class="success__date">
-                <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4.5" width="18" height="16" rx="2"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4"/></svg>
-                <span><span data-cfg="data">[DATA]</span> às <span data-cfg="horario">[HORÁRIO]</span> · ao vivo</span>
-              </p>
-              <a class="btn btn--block btn--wa" data-grupo hidden target="_blank" rel="noopener">
+              <p class="pill pill--soft"><span><span data-cfg="data">[DATA]</span> às <span data-cfg="horario">[HORÁRIO]</span> · ao vivo</span></p>
+              <a class="btn btn--block" data-grupo hidden target="_blank" rel="noopener">
                 Entrar no grupo da turma
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
               </a>
             </div>
           </div>
@@ -214,86 +234,89 @@
 
     <!-- ═════════════ DOBRA 3 — QUEM É DENNIS PENNA ═════════════ -->
     <section class="about" aria-labelledby="about-title">
-      <div class="about__bg" aria-hidden="true"></div>
       <div class="wrap about__grid">
-        <figure class="about__photo reveal">
-          <div class="about__frame" aria-hidden="true"></div>
-          <img src="/masterclass/img/dennis-palco.webp" alt="Dennis Penna sorrindo no palco, com microfone na mão" width="1620" height="1080" loading="lazy" decoding="async" />
-          <ul class="about__pillars" aria-hidden="true">
-            <li>Pessoas</li>
-            <li>Mercado</li>
-            <li>Estratégia</li>
-            <li>Crescimento</li>
-          </ul>
+        <figure class="about__photo">
+          <span class="rings rings--light" aria-hidden="true">
+            <span class="ring ring--1"></span>
+            <span class="ring ring--2"><i></i></span>
+            <span class="ring ring--3"><i></i></span>
+          </span>
+          <span class="halo halo--light" aria-hidden="true"></span>
+          <img src="/masterclass/img/dennis-sobre.webp" alt="Dennis Penna sorrindo no palco, com microfone na mão" width="634" height="873" loading="lazy" decoding="async" data-parallax="0.05" />
+          <span class="stat stat--a" data-parallax="-0.08">
+            <strong><small>quase</small><span data-count="20">20</span></strong>
+            <span>anos no mercado<br />de palestras</span>
+          </span>
+          <span class="stat stat--b" data-parallax="-0.12">
+            <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0 0 14 0M12 17v5M8 22h8"/></svg>
+            <span>CEO da<br />Polo Palestrantes</span>
+          </span>
         </figure>
 
         <div class="about__content">
-          <h2 id="about-title" class="title-xl reveal">Quem é <span class="accent">Dennis Penna?</span></h2>
-          <p class="about__role reveal">Mentor de Palestrantes <span aria-hidden="true">|</span> CEO e Cofundador da Polo Palestrantes</p>
+          <h2 id="about-title" class="h2 h2--light up">Quem é Dennis Penna?</h2>
+          <p class="about__role up">Mentor de Palestrantes · CEO e Cofundador da Polo Palestrantes</p>
 
-          <div class="about__text reveal">
-            <p>Há quase <strong>20 anos</strong>, Dennis vive o mercado de palestras dos dois lados.</p>
-            <p>De um lado, empresas buscando profissionais para seus eventos. Do outro, palestrantes tentando construir carreiras mais fortes, valorizadas e consistentes.</p>
-            <p>Como CEO e cofundador da Polo Palestrantes, acompanhou <strong>milhares de negociações, eventos, apresentações</strong> e diferentes momentos da carreira de grandes profissionais.</p>
-            <p>Ao longo dessa trajetória, ajudou a desenvolver uma leitura muito clara sobre os fatores que fazem uma carreira avançar — ou ficar travada.</p>
+          <div class="about__text up">
+            <p>Há <strong>quase 20 anos</strong>, Dennis vive o mercado de palestras dos dois lados. De um lado, empresas buscando profissionais para seus eventos. Do outro, palestrantes tentando construir carreiras mais fortes, valorizadas e consistentes.</p>
+            <p>Como CEO e cofundador da Polo Palestrantes, acompanhou <strong>milhares de negociações, eventos, apresentações</strong> e diferentes momentos da carreira de grandes profissionais. Ao longo dessa trajetória, ajudou a desenvolver uma leitura muito clara sobre os fatores que fazem uma carreira avançar — ou ficar travada.</p>
             <p>Hoje, além de liderar a Polo, dedica parte importante do seu trabalho a ajudar palestrantes a entenderem melhor o mercado, ajustarem seu posicionamento e tomarem decisões mais estratégicas para crescer.</p>
+            <p class="about__quote"><strong>Porque cada carreira pede um movimento, um planejamento e uma estratégia diferentes.</strong></p>
           </div>
 
-          <blockquote class="quote reveal">
-            <p>Porque cada carreira pede um movimento, um planejamento e uma estratégia diferentes.</p>
-          </blockquote>
-
-          <a class="btn reveal" href="#inscricao" data-cta>Inscreva-se <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          <a class="btn btn--dark up" href="#inscricao" data-cta>
+            Inscreva-se
+            <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
         </div>
       </div>
     </section>
 
     <!-- ═════════════ DOBRA 4 — FECHAMENTO ═════════════ -->
     <section class="closing" aria-labelledby="closing-title">
-      <div class="closing__bg" aria-hidden="true"></div>
+      <span class="glow glow--c" aria-hidden="true"></span>
       <div class="wrap closing__inner">
-        <h2 id="closing-title" class="closing__title reveal">
-          Sua carreira pode estar mais perto do
-          <span class="accent">próximo nível do que você imagina.</span>
-        </h2>
-        <p class="closing__lead reveal"><strong>O primeiro passo é entender onde está o gargalo.</strong></p>
-        <p class="closing__sub reveal">Descubra em qual dos 4 perfis você mais se aproxima e quais pontos merecem atenção agora.</p>
-        <a class="btn btn--lg reveal" href="#inscricao" data-cta>Garanta sua vaga <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-
-        <ul class="facts reveal">
-          <li>
-            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4.5" width="18" height="16" rx="2"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4"/></svg>
-            <span><span data-cfg="data">[DATA]</span> às <span data-cfg="horario">[HORÁRIO]</span><br />Online e gratuita</span>
-          </li>
-          <li>
-            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.6a3.5 3.5 0 0 1 0 6.8M18 14a6.5 6.5 0 0 1 3.5 6"/></svg>
-            <span>Com<br />Dennis Penna</span>
-          </li>
-          <li>
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8Z"/></svg>
-            <span>Conteúdo prático<br />e aplicável</span>
-          </li>
-        </ul>
+        <h2 id="closing-title" class="closing__title up">Sua carreira pode estar mais perto do próximo nível do que você imagina.</h2>
+        <p class="closing__sub up">O primeiro passo é entender onde está o gargalo. Descubra em qual dos 4 perfis você mais se aproxima e quais pontos merecem atenção agora.</p>
+        <a class="btn btn--lg up" href="#inscricao" data-cta>
+          Garanta sua vaga
+          <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
       </div>
     </section>
   </main>
 
+  <!-- ═════════════ RODAPÉ — padrão do ecossistema, resumido ═════════════ -->
   <footer class="footer">
     <div class="wrap footer__inner">
-      <div class="footer__recap">
-        <p class="footer__title">Palestrante, onde você está travando?</p>
-        <p>Os 4 perfis mais comuns de palestrantes e os pontos cegos que podem estar limitando seus resultados.</p>
+      <div class="footer__brand">
+        <img src="/masterclass/img/logo-palestras-academy.svg" alt="Palestras Academy" width="142" height="48" loading="lazy" />
+        <p>O ecossistema de desenvolvimento de palestrantes da Polo Palestrantes.</p>
       </div>
-      <div class="footer__meta">
-        <img src="/masterclass/img/logo-palestras-academy.svg" alt="Palestras Academy" width="120" height="41" loading="lazy" />
-        <p>© <span data-ano>2026</span> Palestras Academy · <a href="https://www.palestras.academy/politica-de-privacidade">Privacidade</a> · <a href="https://www.palestras.academy/termos-de-uso">Termos</a></p>
-      </div>
+
+      <ul class="footer__social" aria-label="Redes sociais">
+        <li><a href="https://www.instagram.com/palestras.academy/" target="_blank" rel="noopener noreferrer" aria-label="Instagram do Palestras Academy">
+          <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" class="fill"/></svg>
+        </a></li>
+        <li><a href="https://www.linkedin.com/company/polo-palestrantes/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn da Polo Palestrantes">
+          <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6Z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+        </a></li>
+        <li><a href="https://www.youtube.com/@palestras.academy" target="_blank" rel="noopener noreferrer" aria-label="YouTube do Palestras Academy">
+          <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 17a24 24 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.6 49.6 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24 24 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.6 49.6 0 0 1-16.2 0A2 2 0 0 1 2.5 17"/><path d="m10 15 5-3-5-3z"/></svg>
+        </a></li>
+      </ul>
+    </div>
+    <div class="wrap footer__bottom">
+      <p>© <span data-ano>2026</span> Palestras Academy · uma marca do grupo Polo Palestrantes.</p>
+      <p><a href="https://www.palestras.academy/politica-de-privacidade">Política de privacidade</a><span aria-hidden="true"> · </span><a href="https://www.palestras.academy/termos-de-uso">Termos de uso</a></p>
     </div>
   </footer>
 
-  <!-- CTA fixo no celular: aparece depois do hero e some quando o formulário está na tela. -->
+  <!-- CTA fixo no celular -->
   <div class="sticky-cta" id="sticky-cta" aria-hidden="true">
-    <a class="btn btn--block" href="#inscricao" data-cta tabindex="-1">Quero minha vaga gratuita <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+    <a class="btn btn--block" href="#inscricao" data-cta tabindex="-1">Quero minha vaga gratuita
+      <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </a>
   </div>
 
   <script src="/masterclass/config.js"></script>

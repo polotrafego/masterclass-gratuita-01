@@ -2,7 +2,9 @@
   "use strict";
 
   const cfg = window.MASTERCLASS || {};
-  document.documentElement.classList.add("js");
+  const root = document.documentElement;
+  const reduzido = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  root.classList.add("js");
 
   /* ─── Configuração editável → página ─── */
   document.querySelectorAll("[data-cfg]").forEach((el) => {
@@ -11,69 +13,142 @@
   });
   document.querySelectorAll("[data-ano]").forEach((el) => (el.textContent = new Date().getFullYear()));
 
-  /* ─── Entrada em cena ─── */
-  document.querySelectorAll(".hero .reveal").forEach((el, i) => el.style.setProperty("--i", i));
+  /* ─── Faixa deslizante: o trilho anda -50%, então precisa de duas cópias
+     idênticas do grupo para o laço não ter emenda ─── */
+  document.querySelectorAll(".ticker__track").forEach((trilho) => {
+    const grupo = trilho.querySelector(".ticker__group");
+    trilho.appendChild(grupo.cloneNode(true));
+  });
+
+  /* ─── Hero entra em cena ao carregar ─── */
+  const hero = document.querySelector(".hero");
+  requestAnimationFrame(() => requestAnimationFrame(() => hero.classList.add("is-ready")));
+
+  /* ─── Revelação no scroll, em cascata dentro de cada bloco ─── */
+  const grupos = new Map();
+  document.querySelectorAll(".up").forEach((el) => {
+    const pai = el.closest("section, header, .items") || document.body;
+    const i = grupos.get(pai) || 0;
+    el.style.setProperty("--d", `${Math.min(i, 6) * 90}ms`);
+    grupos.set(pai, i + 1);
+  });
   const revelar = new IntersectionObserver(
-    (entradas) =>
-      entradas.forEach((e) => {
+    (es) =>
+      es.forEach((e) => {
         if (!e.isIntersecting) return;
         e.target.classList.add("is-in");
         revelar.unobserve(e.target);
       }),
-    { rootMargin: "0px 0px -8% 0px", threshold: 0.08 },
+    { rootMargin: "0px 0px -10% 0px", threshold: 0.1 },
   );
-  document.querySelectorAll(".reveal").forEach((el) => revelar.observe(el));
+  document.querySelectorAll(".up").forEach((el) => revelar.observe(el));
+
+  /* ─── Selos da foto do "Quem é" + contador ─── */
+  const sobre = document.querySelector(".about__photo");
+  new IntersectionObserver(
+    (es, obs) =>
+      es.forEach((e) => {
+        if (!e.isIntersecting) return;
+        sobre.classList.add("is-in-view");
+        sobre.querySelectorAll("[data-count]").forEach(contar);
+        obs.disconnect();
+      }),
+    { threshold: 0.2 },
+  ).observe(sobre);
+
+  function contar(el) {
+    const alvo = Number(el.dataset.count);
+    if (reduzido) return (el.textContent = alvo);
+    const t0 = performance.now();
+    const dur = 1400;
+    const passo = (t) => {
+      const p = Math.min(1, (t - t0) / dur);
+      el.textContent = Math.round(alvo * (1 - Math.pow(1 - p, 3)));
+      if (p < 1) requestAnimationFrame(passo);
+    };
+    requestAnimationFrame(passo);
+  }
+
+  /* ─── Scroll: progresso, topbar, parallax ─── */
+  const barra = document.getElementById("progress");
+  const topbar = document.getElementById("topbar");
+  // Parallax só em tela larga: no celular os elementos ficam empilhados e o
+  // deslocamento joga os ícones flutuantes por cima do texto.
+  const largo = matchMedia("(min-width: 861px)");
+  const todos = [...document.querySelectorAll("[data-parallax]")];
+  let parallax = [];
+  const definirParallax = () => {
+    parallax = !reduzido && largo.matches ? todos : [];
+    if (!parallax.length) todos.forEach((el) => (el.style.transform = ""));
+  };
+  definirParallax();
+  largo.addEventListener("change", () => (definirParallax(), noScroll()));
+  let agendado = false;
+
+  const noScroll = () => {
+    agendado = false;
+    const y = scrollY;
+    const max = document.documentElement.scrollHeight - innerHeight;
+    barra.style.transform = `scaleX(${max > 0 ? y / max : 0})`;
+
+    const ligar = y > hero.offsetHeight * 0.75;
+    if (ligar !== topbar.classList.contains("is-on")) {
+      topbar.classList.toggle("is-on", ligar);
+      topbar.setAttribute("aria-hidden", String(!ligar));
+      topbar.querySelector("a").tabIndex = ligar ? 0 : -1;
+    }
+
+    parallax.forEach((el) => {
+      const r = el.parentElement.getBoundingClientRect();
+      if (r.bottom < -200 || r.top > innerHeight + 200) return;
+      const meio = r.top + r.height / 2 - innerHeight / 2;
+      el.style.transform = `translate3d(0, ${(-meio * Number(el.dataset.parallax)).toFixed(1)}px, 0)`;
+    });
+  };
+  addEventListener("scroll", () => !agendado && (agendado = true) && requestAnimationFrame(noScroll), { passive: true });
+  addEventListener("resize", noScroll, { passive: true });
+  noScroll();
 
   /* ─── Todo CTA leva ao formulário e põe o cursor no primeiro campo ─── */
   const card = document.querySelector(".card");
+  const form = document.getElementById("lead-form");
   const campoNome = document.getElementById("f-nome");
   document.querySelectorAll("[data-cta]").forEach((a) =>
     a.addEventListener("click", (ev) => {
       ev.preventDefault();
-      const alvo = document.getElementById("inscricao");
-      const reduzido = matchMedia("(prefers-reduced-motion: reduce)").matches;
-      alvo.scrollIntoView({ behavior: reduzido ? "auto" : "smooth", block: "start" });
+      document.getElementById("inscricao").scrollIntoView({ behavior: reduzido ? "auto" : "smooth", block: "start" });
       history.replaceState(null, "", "#inscricao");
       setTimeout(() => {
-        if (campoNome && !document.getElementById("lead-form").hidden) campoNome.focus({ preventScroll: true });
+        if (!form.hidden) campoNome.focus({ preventScroll: true });
         card.classList.remove("is-pulse");
         void card.offsetWidth;
         card.classList.add("is-pulse");
-      }, reduzido ? 0 : 650);
+      }, reduzido ? 0 : 700);
     }),
   );
 
   /* ─── CTA fixo no celular: depois do hero, fora do formulário ─── */
   const sticky = document.getElementById("sticky-cta");
-  const hero = document.querySelector(".hero");
   const formCol = document.getElementById("inscricao");
-  const visivel = { hero: true, form: false };
+  const vis = { hero: true, form: false };
   const atualizarSticky = () => {
-    const on = !visivel.hero && !visivel.form;
+    const on = !vis.hero && !vis.form && !form.hidden;
     sticky.classList.toggle("is-on", on);
     sticky.setAttribute("aria-hidden", String(!on));
     sticky.querySelector("a").tabIndex = on ? 0 : -1;
   };
-  new IntersectionObserver(
+  const obsSticky = new IntersectionObserver(
     (es) =>
       es.forEach((e) => {
-        if (e.target === hero) visivel.hero = e.isIntersecting;
-        if (e.target === formCol) visivel.form = e.isIntersecting;
+        vis[e.target === hero ? "hero" : "form"] = e.isIntersecting;
         atualizarSticky();
       }),
-    { threshold: 0.15 },
-  ).observe(hero);
-  new IntersectionObserver(
-    (es) =>
-      es.forEach((e) => {
-        visivel.form = e.isIntersecting;
-        atualizarSticky();
-      }),
-    { threshold: 0.15 },
-  ).observe(formCol);
+    { threshold: 0.12 },
+  );
+  obsSticky.observe(hero);
+  obsSticky.observe(formCol);
 
   /* ─── Formulário ─── */
-  const form = document.getElementById("lead-form");
   const status = document.getElementById("form-status");
   const sucesso = document.getElementById("form-success");
   const botao = form.querySelector("button[type=submit]");
@@ -100,8 +175,7 @@
 
   const validar = (input) => {
     const msg = regras[input.name](input.value);
-    const campo = input.closest(".field");
-    campo.classList.toggle("is-invalid", !!msg);
+    input.closest(".field").classList.toggle("is-invalid", !!msg);
     input.setAttribute("aria-invalid", String(!!msg));
     const err = document.getElementById(`e-${input.name}`);
     err.textContent = msg;
@@ -134,10 +208,7 @@
     const invalidos = Object.keys(regras)
       .map((n) => form.elements[n])
       .filter((i) => !validar(i));
-    if (invalidos.length) {
-      invalidos[0].focus();
-      return;
-    }
+    if (invalidos.length) return invalidos[0].focus();
 
     botao.setAttribute("aria-busy", "true");
     botao.querySelector(".btn__label").textContent = "Enviando…";
@@ -158,17 +229,14 @@
         body: JSON.stringify(dados),
       });
       const corpo = await res.json().catch(() => ({}));
-      if (!res.ok || !corpo.ok) throw new Error(corpo.erro || "Falha no envio");
+      if (!res.ok || !corpo.ok) throw new Error(corpo.erro || "");
 
       mostrarSucesso(dados.nome);
-      // Eventos para GTM / Pixel, se estiverem instalados.
       (window.dataLayer = window.dataLayer || []).push({ event: "lead_masterclass", form: "masterclass" });
       if (typeof window.fbq === "function") window.fbq("track", "Lead", { content_name: "Masterclass gratuita" });
     } catch (err) {
       status.textContent =
-        err.message && err.message !== "Falha no envio" && err.message.length < 140
-          ? err.message
-          : "Não conseguimos enviar agora. Confira sua conexão e tente de novo.";
+        err.message && err.message.length < 140 ? err.message : "Não conseguimos enviar agora. Confira sua conexão e tente de novo.";
       botao.removeAttribute("aria-busy");
       botao.querySelector(".btn__label").textContent = "Quero participar";
     }
@@ -176,6 +244,7 @@
 
   function mostrarSucesso(nome) {
     form.hidden = true;
+    document.querySelector(".card__head").hidden = true;
     sucesso.hidden = false;
     sucesso.querySelector("[data-nome]").textContent = nome.split(/\s+/)[0];
     const grupo = sucesso.querySelector("[data-grupo]");
@@ -183,13 +252,7 @@
       grupo.href = cfg.grupoWhatsapp;
       grupo.hidden = false;
     }
-    document.querySelector(".card__head").hidden = true;
     sucesso.focus();
-    // Quem já se inscreveu não precisa mais do CTA fixo.
-    sticky.remove();
-    document.querySelectorAll("[data-cta]").forEach((a) => {
-      const label = a.firstChild;
-      if (label && label.nodeType === 3) label.textContent = "Inscrição confirmada ";
-    });
+    atualizarSticky();
   }
 })();
