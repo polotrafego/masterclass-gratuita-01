@@ -1,0 +1,10 @@
+{
+  "name": "masterclass-gratuita-01",
+  "private": true,
+  "type": "module",
+  "description": "LP de captura da masterclass gratuita com Dennis Penna — Palestras Academy",
+  "scripts": {
+    "dev": "node scripts/dev.mjs"
+  },
+  "engines": { "node": ">=20" }
+}
