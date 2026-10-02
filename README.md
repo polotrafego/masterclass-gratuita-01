@@ -10,9 +10,9 @@ public/masterclass/   a página (HTML/CSS/JS estáticos, sem build)
   config.js           ← data, horário e link do grupo de WhatsApp. É AQUI que se edita a turma.
   index.html
   styles.css
-  main.js             máscara do WhatsApp, validação, envio, animações
+  main.js             máscara do WhatsApp, validação antes do envio ao LeadLovers, animações
+  obrigado.html/.js   página de obrigado
   img/
-api/lead.js           função da Vercel: recebe o formulário e envia ao LeadLovers
 scripts/dev.mjs       servidor local (sem dependências)
 vercel.json
 ```
@@ -23,31 +23,27 @@ no domínio próprio da Vercel e servida pelo site principal.
 ## Rodar localmente
 
 ```bash
-npm run dev                 # http://localhost:5310/masterclass (chama o LeadLovers de verdade)
-MOCK_LEAD=1 npm run dev     # o envio responde "ok" sem sair da máquina
+npm run dev                 # http://localhost:5310/masterclass  e  /masterclass/obrigado
 ```
 
 ## Leads → LeadLovers
 
-O formulário envia nome, e-mail e WhatsApp para `/masterclass/api/lead`, que faz um `PUT /Lead`
-(upsert) na API do LeadLovers — o mesmo contrato do site principal (`src/lib/leadlovers.server.ts`).
-A origem do lead (`Source`) leva as UTMs: `masterclass | src:… | med:… | camp:…`.
+O formulário é o **formulário dinâmico do LeadLovers** (máquina `730939`, formulário `fid 77742`),
+enviado pelo script deles (`paginas.rocks/scripts/capture/capture.js`), com o visual da página.
+O `form001.css` do LeadLovers não é usado: ele trocaria o design.
 
-Se o envio falhar, a pessoa vê o erro e pode tentar de novo — não existe "inscrição confirmada" falsa,
-porque o LeadLovers é o único destino.
+- Os ids e nomes dos campos (`llfield89894` nome, `llfield89892` e-mail, `llfield89893` telefone,
+  `llfield122830` tempo de palco) precisam ficar como estão: é o que o LeadLovers lê.
+- A validação da página roda antes do `capture.js` (ouvinte de captura no `<form>`, em `main.js`).
+  É ali também que o WhatsApp digitado vira só dígitos com DDI (`55…`) no campo oculto `llfield89893`.
+- Depois de gravar o lead, o LeadLovers **redireciona para a página de obrigado configurada no
+  formulário 77742, no painel dele**. Ela precisa apontar para
+  `https://www.palestras.academy/masterclass/obrigado`.
 
-Variáveis de ambiente na Vercel (Settings → Environment Variables):
+## Página de obrigado
 
-| Variável | Obrigatória | O quê |
-|---|---|---|
-| `LEADLOVERS_API_TOKEN` | sim | Token Pessoal da conta (LeadLovers → Configurações → Perfil) |
-| `LEADLOVERS_FUNIL` | sim | Funil da masterclass: o nome exato (ex.: `_MasterClass Gratuita OUT26`) ou o código (`EmailSequenceCode`). Pelo nome, a função descobre o código na API |
-| `LEADLOVERS_MAQUINA` | não | Código da máquina. Padrão `730939` (a mesma do site) |
-| `LEADLOVERS_NIVEL` | não | Nível de entrada no funil. Padrão `1` |
-
-Para conferir a configuração sem criar lead: `GET /masterclass/api/lead` responde qual funil foi encontrado.
-
-Sem token ou funil a API responde 503 e o formulário mostra "inscrições temporariamente indisponíveis".
+`public/masterclass/obrigado.html` → `/masterclass/obrigado` (fora do Google: `noindex`).
+Botões: comunidade Vida de Palestrante (destaque) e dúvidas com a equipe (discreto).
 
 ## Servir em www.palestras.academy/masterclass
 
@@ -61,5 +57,6 @@ com duas regras de rewrite (Project → Settings → Routing, ou `vercel.json`):
 
 ## Eventos de conversão
 
-Ao confirmar a inscrição a página dispara `dataLayer.push({ event: "lead_masterclass" })` e,
-se o Pixel da Meta estiver na página, `fbq("track", "Lead")`.
+Na página de obrigado (uma vez por sessão): `dataLayer.push({ event: "lead_masterclass" })` e,
+se o Pixel da Meta estiver na página, `fbq("track", "Lead")`. Cliques nos WhatsApp:
+`dataLayer.push({ event: "obrigado_whatsapp", destino: "comunidade" | "duvidas" })`.

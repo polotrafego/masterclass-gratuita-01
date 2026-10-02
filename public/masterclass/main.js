@@ -111,15 +111,15 @@
 
   /* ─── Todo CTA leva ao formulário e põe o cursor no primeiro campo ─── */
   const card = document.querySelector(".form-box");
-  const form = document.getElementById("lead-form");
-  const campoNome = document.getElementById("f-nome");
+  const form = document.getElementById("llCaptureForm");
+  const campoNome = document.getElementById("llfield89894");
   document.querySelectorAll("[data-cta]").forEach((a) =>
     a.addEventListener("click", (ev) => {
       ev.preventDefault();
       document.getElementById("inscricao").scrollIntoView({ behavior: reduzido ? "auto" : "smooth", block: "start" });
       history.replaceState(null, "", "#inscricao");
       setTimeout(() => {
-        if (!form.hidden) campoNome.focus({ preventScroll: true });
+        campoNome.focus({ preventScroll: true });
         card.classList.remove("is-pulse");
         void card.offsetWidth;
         card.classList.add("is-pulse");
@@ -132,7 +132,7 @@
   const formCol = document.getElementById("inscricao");
   const vis = { hero: true, form: false };
   const atualizarSticky = () => {
-    const on = !vis.hero && !vis.form && !form.hidden;
+    const on = !vis.hero && !vis.form;
     sticky.classList.toggle("is-on", on);
     sticky.setAttribute("aria-hidden", String(!on));
     sticky.querySelector("a").tabIndex = on ? 0 : -1;
@@ -148,11 +148,19 @@
   obsSticky.observe(hero);
   obsSticky.observe(formCol);
 
-  /* ─── Formulário ─── */
-  const status = document.getElementById("form-status");
-  const sucesso = document.getElementById("form-success");
+  /* ─── Formulário ───
+     Quem envia é o capture.js do LeadLovers: ele escuta o clique no botão,
+     manda os campos para paginas.rocks e, se der certo, redireciona para a
+     página de obrigado configurada no formulário (fid 77742) lá no LeadLovers.
+
+     A validação dele só confere campo vazio. A nossa roda ANTES, num ouvinte
+     de captura no próprio <form>: o evento passa por ele antes de chegar ao
+     botão, então quando algo está errado o clique para aqui e o capture.js
+     nem fica sabendo. Também é aqui que o WhatsApp digitado vira o formato
+     que o LeadLovers espera (só dígitos, com DDI 55) no campo oculto. */
   const botao = form.querySelector("button[type=submit]");
   const tel = document.getElementById("f-whatsapp");
+  const telOculto = document.getElementById("llfield89893");
 
   // Máscara brasileira: (11) 98888-7777 / (11) 3888-7777.
   const mascarar = (v) => {
@@ -164,95 +172,64 @@
   };
   tel.addEventListener("input", () => (tel.value = mascarar(tel.value)));
 
-  const regras = {
-    nome: (v) => (v.trim().split(/\s+/).length >= 2 && v.trim().length >= 5 ? "" : "Digite seu nome e sobrenome."),
-    email: (v) => (/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()) ? "" : "Digite um e-mail válido."),
-    whatsapp: (v) => {
-      const d = v.replace(/\D/g, "");
-      return d.length === 10 || d.length === 11 ? "" : "Digite seu WhatsApp com DDD.";
-    },
-  };
+  const campos = [
+    { el: document.getElementById("llfield89894"), erro: "llerror89894", regra: (v) => (v.trim().split(/\s+/).length >= 2 && v.trim().length >= 5 ? "" : "Digite seu nome e sobrenome.") },
+    { el: document.getElementById("llfield89892"), erro: "llerror89892", regra: (v) => (/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()) ? "" : "Digite um e-mail válido.") },
+    { el: tel, erro: "llerror89893", regra: (v) => ([10, 11].includes(v.replace(/\D/g, "").length) ? "" : "Digite seu WhatsApp com DDD.") },
+    { el: document.getElementById("llfield122830"), erro: "llerror122830", regra: (v) => (v ? "" : "Escolha há quanto tempo você palestra.") },
+  ];
 
-  const validar = (input) => {
-    const msg = regras[input.name](input.value);
-    input.closest(".field").classList.toggle("is-invalid", !!msg);
-    input.setAttribute("aria-invalid", String(!!msg));
-    const err = document.getElementById(`e-${input.name}`);
+  const validar = (c) => {
+    const msg = c.regra(c.el.value);
+    const err = document.getElementById(c.erro);
+    c.el.closest(".field").classList.toggle("is-invalid", !!msg);
+    c.el.setAttribute("aria-invalid", String(!!msg));
+    c.el.setAttribute("aria-describedby", c.erro);
     err.textContent = msg;
-    input.setAttribute("aria-describedby", err.id);
+    err.classList.toggle("show", !!msg);
     return !msg;
   };
-
-  Object.keys(regras).forEach((nome) => {
-    const input = form.elements[nome];
-    input.addEventListener("blur", () => input.value && validar(input));
-    input.addEventListener("input", () => input.closest(".field").classList.contains("is-invalid") && validar(input));
+  campos.forEach((c) => {
+    const ev = c.el.tagName === "SELECT" ? "change" : "blur";
+    c.el.addEventListener(ev, () => c.el.value && validar(c));
+    c.el.addEventListener("input", () => c.el.closest(".field").classList.contains("is-invalid") && validar(c));
   });
 
-  // UTMs e afins: guardados na primeira visita, para não se perderem num reload.
-  const UTM = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "fbclid", "gclid"];
-  const params = new URLSearchParams(location.search);
-  let rastreio = {};
-  try {
-    rastreio = JSON.parse(sessionStorage.getItem("mc-utm") || "{}");
-  } catch {}
-  UTM.forEach((k) => params.get(k) && (rastreio[k] = params.get(k)));
-  try {
-    sessionStorage.setItem("mc-utm", JSON.stringify(rastreio));
-  } catch {}
+  form.addEventListener(
+    "click",
+    (ev) => {
+      if (!ev.target.closest("button[type=submit]")) return;
+      const invalidos = campos.filter((c) => !validar(c));
+      if (invalidos.length) {
+        ev.preventDefault();
+        ev.stopImmediatePropagation();
+        invalidos[0].el.focus();
+        return;
+      }
+      form.elements.llfield89892.value = form.elements.llfield89892.value.trim().toLowerCase();
+      form.elements.llfield89894.value = form.elements.llfield89894.value.trim().replace(/\s+/g, " ");
+      telOculto.value = `55${tel.value.replace(/\D/g, "")}`;
+    },
+    true,
+  );
+  // Enter num campo: o navegador simula o clique no botão, que passa pela validação acima.
 
-  form.addEventListener("submit", async (ev) => {
-    ev.preventDefault();
-    status.textContent = "";
-
-    const invalidos = Object.keys(regras)
-      .map((n) => form.elements[n])
-      .filter((i) => !validar(i));
-    if (invalidos.length) return invalidos[0].focus();
-
-    botao.setAttribute("aria-busy", "true");
-    botao.querySelector(".btn__label").textContent = "Enviando…";
-
-    const dados = {
-      nome: form.elements.nome.value.trim(),
-      email: form.elements.email.value.trim().toLowerCase(),
-      whatsapp: form.elements.whatsapp.value,
-      site: form.elements.site.value,
-      pagina: location.href.split("#")[0],
-      ...rastreio,
-    };
-
-    try {
-      const res = await fetch("/masterclass/api/lead", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(dados),
-      });
-      const corpo = await res.json().catch(() => ({}));
-      if (!res.ok || !corpo.ok) throw new Error(corpo.erro || "");
-
-      mostrarSucesso(dados.nome);
-      (window.dataLayer = window.dataLayer || []).push({ event: "lead_masterclass", form: "masterclass" });
-      if (typeof window.fbq === "function") window.fbq("track", "Lead", { content_name: "Masterclass gratuita" });
-    } catch (err) {
-      status.textContent =
-        err.message && err.message.length < 140 ? err.message : "Não conseguimos enviar agora. Confira sua conexão e tente de novo.";
-      botao.removeAttribute("aria-busy");
-      botao.querySelector(".btn__label").textContent = "Quero participar";
-    }
-  });
-
-  function mostrarSucesso(nome) {
-    form.hidden = true;
-    document.querySelector(".card__head").hidden = true;
-    sucesso.hidden = false;
-    sucesso.querySelector("[data-nome]").textContent = nome.split(/\s+/)[0];
-    const grupo = sucesso.querySelector("[data-grupo]");
-    if (cfg.grupoWhatsapp) {
-      grupo.href = cfg.grupoWhatsapp;
-      grupo.hidden = false;
-    }
-    sucesso.focus();
-    atualizarSticky();
-  }
+  /* Rede de segurança: se o LeadLovers não responder (o capture.js só trata
+     resposta 200), a tela ficaria girando para sempre. Depois de 20 s volta
+     o formulário com um aviso, e a pessoa pode tentar de novo. */
+  const caixaCarregando = form.querySelector(".loading-box");
+  const caixaErro = form.querySelector(".error-box");
+  let prazo = null;
+  new MutationObserver(() => {
+    const carregando = caixaCarregando.classList.contains("show");
+    botao.setAttribute("aria-busy", String(carregando));
+    clearTimeout(prazo);
+    if (!carregando) return;
+    prazo = setTimeout(() => {
+      if (!caixaCarregando.classList.contains("show")) return;
+      caixaCarregando.classList.remove("show");
+      caixaErro.querySelector("div").textContent = "Não conseguimos confirmar sua inscrição agora. Confira sua conexão e tente de novo.";
+      caixaErro.classList.add("show");
+    }, 20000);
+  }).observe(caixaCarregando, { attributes: true, attributeFilter: ["class"] });
 })();

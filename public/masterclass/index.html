@@ -181,53 +181,69 @@
               <h2 id="form-title">Preencha o formulário e garanta sua vaga na masterclass!</h2>
             </div>
 
-            <form class="form" id="lead-form" novalidate>
+            <!-- Formulário do LeadLovers (mid 730939 · fid 77742), enviado pelo capture.js deles.
+                 Os ids e nomes dos campos precisam ficar como estão: é o que o LeadLovers lê. -->
+            <form id="llCaptureForm" class="form llform001" action="https://paginas.rocks/capture" method="post" novalidate>
+              <input type="hidden" id="mid" name="mid" value="730939" />
+              <input type="hidden" id="fid" name="fid" value="77742" />
+              <input type="hidden" id="formType" name="formType" value="dynamic" />
+              <input type="hidden" name="keep_parameters" value="true" />
+
               <div class="field">
-                <label class="sr" for="f-nome">Nome completo</label>
-                <input id="f-nome" name="nome" type="text" autocomplete="name" placeholder="Nome completo *" required maxlength="120" />
-                <p class="field__err" id="e-nome" role="alert"></p>
+                <label class="sr" for="llfield89894">Nome completo</label>
+                <input type="text" id="llfield89894" name="llfield89894" autocomplete="name" placeholder="Nome completo *" maxlength="120" data-required="true" />
+                <div class="field-error" id="llerror89894"></div>
               </div>
               <div class="field">
-                <label class="sr" for="f-email">E-mail</label>
-                <input id="f-email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="E-mail *" required maxlength="255" />
-                <p class="field__err" id="e-email" role="alert"></p>
+                <label class="sr" for="llfield89892">E-mail profissional</label>
+                <input type="email" id="llfield89892" name="llfield89892" inputmode="email" autocomplete="email" placeholder="E-mail profissional *" maxlength="255" data-required="true" />
+                <div class="field-error" id="llerror89892"></div>
               </div>
               <div class="field">
-                <label class="sr" for="f-whatsapp">WhatsApp</label>
-                <input id="f-whatsapp" name="whatsapp" type="tel" inputmode="tel" autocomplete="tel-national" placeholder="WhatsApp com DDD *" required maxlength="20" />
-                <p class="field__err" id="e-whatsapp" role="alert"></p>
+                <label class="sr" for="f-whatsapp">WhatsApp com DDD</label>
+                <!-- O que a pessoa digita fica neste campo, sem nome: quem vai para o
+                     LeadLovers é o oculto abaixo, só com dígitos e DDI (55...). -->
+                <input type="tel" id="f-whatsapp" inputmode="tel" autocomplete="tel-national" placeholder="WhatsApp com DDD *" maxlength="20" />
+                <input type="hidden" id="llfield89893" name="llfield89893" data-required="true" />
+                <div class="field-error" id="llerror89893"></div>
+              </div>
+              <div class="field field--select">
+                <label class="sr" for="llfield122830">Há quanto tempo você palestra?</label>
+                <select id="llfield122830" name="llfield122830" data-required="true">
+                  <option value="">Tempo como palestrante *</option>
+                  <option value="Menos de 1 ano">Menos de 1 ano</option>
+                  <option value="Entre 1 e 3 anos">Entre 1 e 3 anos</option>
+                  <option value="Entre 3 e 5 anos">Entre 3 e 5 anos</option>
+                  <option value="Entre 5 e 10 anos">Entre 5 e 10 anos</option>
+                  <option value="Mais de 10 anos">Mais de 10 anos</option>
+                </select>
+                <svg class="ico field__chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+                <div class="field-error" id="llerror122830"></div>
               </div>
 
-              <!-- Armadilha para robôs: invisível para pessoas. -->
-              <div class="hp" aria-hidden="true">
-                <label for="f-site">Site</label>
-                <input id="f-site" name="site" type="text" tabindex="-1" autocomplete="off" />
+              <div class="button-bar">
+                <button class="btn btn--block" type="submit">
+                  <span class="btn__label">Quero participar</span>
+                  <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                </button>
               </div>
 
-              <button class="btn btn--block" type="submit">
-                <span class="btn__label">Quero participar</span>
-                <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-                <span class="btn__spinner" aria-hidden="true"></span>
-              </button>
+              <div class="form__foot">
+                <p class="form__note">Masterclass online, ao vivo e gratuita.</p>
+                <p class="form__legal">Prometemos não utilizar suas informações de contato para enviar qualquer tipo de spam. Ao se inscrever, você concorda com a <a href="https://www.palestras.academy/politica-de-privacidade" target="_blank" rel="noopener">Política de Privacidade</a>.</p>
+              </div>
 
-              <p class="form__status" id="form-status" role="status" aria-live="polite"></p>
-
-              <p class="form__note">Masterclass online, ao vivo e gratuita.</p>
-              <p class="form__legal">Prometemos não utilizar suas informações de contato para enviar qualquer tipo de spam. Ao se inscrever, você concorda com a <a href="https://www.palestras.academy/politica-de-privacidade" target="_blank" rel="noopener">Política de Privacidade</a>.</p>
+              <div class="loading-box" role="status" aria-live="polite">
+                <span class="loading-box__spin" aria-hidden="true"></span>
+                <div>Garantindo sua vaga…</div>
+              </div>
+              <div class="error-box" role="alert">
+                <span class="error-box__icon" aria-hidden="true">!</span>
+                <div></div>
+                <button type="button" class="btn btn--sm" id="btn-error">Tentar de novo</button>
+              </div>
+              <img src="https://llimages.com/redirect/redirect.aspx?A=V&amp;f=77742&amp;m=730939" alt="" width="1" height="1" style="display: none;" />
             </form>
-
-            <div class="success" id="form-success" hidden tabindex="-1">
-              <span class="success__icon" aria-hidden="true">
-                <svg class="ico" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>
-              </span>
-              <h3>Inscrição confirmada!</h3>
-              <p>Sua vaga está garantida, <strong data-nome></strong>. Você vai receber no e-mail e no WhatsApp o link da aula e os lembretes.</p>
-              <p class="pill pill--soft"><span><span data-cfg="data">[DATA]</span> às <span data-cfg="horario">[HORÁRIO]</span> · ao vivo</span></p>
-              <a class="btn btn--block" data-grupo hidden target="_blank" rel="noopener">
-                Entrar no grupo da turma
-                <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-              </a>
-            </div>
           </div>
           </div>
         </aside>
@@ -323,5 +339,6 @@
 
   <script src="/masterclass/config.js"></script>
   <script src="/masterclass/main.js" defer></script>
+  <script src="https://paginas.rocks/scripts/capture/capture.js" defer></script>
 </body>
 </html>
