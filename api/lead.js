@@ -7,7 +7,9 @@
  *
  * Variáveis de ambiente (Vercel → Settings → Environment Variables):
  *   LEADLOVERS_API_TOKEN  obrigatória — "Token Pessoal" da conta (Configurações > Perfil)
- *   LEADLOVERS_FUNIL      obrigatória — código do funil (EmailSequenceCode) da masterclass
+ *   LEADLOVERS_FUNIL      obrigatória — o funil da masterclass: o CÓDIGO (EmailSequenceCode)
+ *                         ou o NOME exato, como aparece no LeadLovers
+ *                         (ex.: "_MasterClass Gratuita OUT26")
  *   LEADLOVERS_MAQUINA    opcional    — código da máquina; padrão 730939, a mesma do site
  *   LEADLOVERS_NIVEL      opcional    — nível de entrada no funil; padrão 1
  *
@@ -27,6 +29,47 @@ function telefoneComDDI(bruto) {
   return digitos;
 }
 
+/*
+ * Funil pelo nome. O link do painel do LeadLovers mostra a máquina
+ * (/machine/sequence/730939), não o código do funil, e o código não aparece
+ * em lugar óbvio da tela. Aceitar o nome tira esse passo de quem configura:
+ * a função pergunta à API (/EmailSequences da máquina) qual código tem esse
+ * nome, uma vez por instância, e reaproveita a resposta.
+ *
+ * A leitura da resposta é tolerante de propósito: o formato exato desse
+ * endpoint nunca foi registrado no projeto, então procura o item cujo nome
+ * bate e pega o campo de código dele, venha a lista em Items ou solta.
+ */
+let funilEmCache = null;
+
+const normaliza = (t) => String(t || "").trim().toLowerCase();
+
+async function resolverFunil(config, token, maquina) {
+  if (/^\d+$/.test(config)) return { codigo: Number(config), nome: null };
+  if (funilEmCache && funilEmCache.config === config) return funilEmCache.valor;
+
+  const r = await fetch(`${BASE_URL}/EmailSequences?token=${encodeURIComponent(token)}&machineCode=${maquina}`, {
+    headers: { Accept: "application/json" },
+    signal: AbortSignal.timeout(10000),
+  });
+  const corpo = await r.json().catch(() => null);
+  if (!r.ok || !corpo) throw new Error(`EmailSequences respondeu HTTP ${r.status}`);
+
+  const lista = Array.isArray(corpo) ? corpo : corpo.Items || corpo.items || corpo.Data || corpo.data || [];
+  const alvo = normaliza(config);
+  const item = lista.find((it) => Object.values(it || {}).some((v) => typeof v === "string" && normaliza(v) === alvo));
+  if (!item) {
+    const nomes = lista.map((it) => Object.values(it || {}).find((v) => typeof v === "string")).filter(Boolean);
+    throw new Error(`Funil "${config}" não encontrado na máquina ${maquina}. Funis: ${nomes.join(", ") || "(nenhum)"}`);
+  }
+  const chave = Object.keys(item).find((k) => /code|id/i.test(k) && Number(item[k]) > 0);
+  if (!chave) throw new Error(`Funil "${config}" encontrado, mas sem campo de código: ${JSON.stringify(item)}`);
+
+  const valor = { codigo: Number(item[chave]), nome: config };
+  funilEmCache = { config, valor };
+  return valor;
+}
+
 function limpa(v, max) {
   return typeof v === "string" ? v.trim().slice(0, max) : "";
 }
@@ -43,8 +86,21 @@ function origem(dados) {
 export default async function handler(req, res) {
   res.setHeader("Cache-Control", "no-store");
 
+  if (req.method === "GET") {
+    const token = process.env.LEADLOVERS_API_TOKEN;
+    const config = limpa(process.env.LEADLOVERS_FUNIL || "", 200);
+    const maquina = Number(process.env.LEADLOVERS_MAQUINA || 730939);
+    if (!token || !config) return res.status(200).json({ ok: false, token: !!token, funil: !!config });
+    try {
+      const funil = await resolverFunil(config, token, maquina);
+      return res.status(200).json({ ok: true, maquina, funil: funil.codigo, nome: funil.nome });
+    } catch (err) {
+      return res.status(200).json({ ok: false, erro: err.message });
+    }
+  }
+
   if (req.method !== "POST") {
-    res.setHeader("Allow", "POST");
+    res.setHeader("Allow", "GET, POST");
     return res.status(405).json({ ok: false, erro: "Método não permitido." });
   }
 
@@ -72,12 +128,20 @@ export default async function handler(req, res) {
   if (telefone.length < 12 || telefone.length > 13) return res.status(422).json({ ok: false, erro: "Digite seu WhatsApp com DDD." });
 
   const token = process.env.LEADLOVERS_API_TOKEN;
-  const funil = Number(process.env.LEADLOVERS_FUNIL);
+  const configFunil = limpa(process.env.LEADLOVERS_FUNIL || "", 200);
   const maquina = Number(process.env.LEADLOVERS_MAQUINA || 730939);
   const nivel = Number(process.env.LEADLOVERS_NIVEL || 1);
 
-  if (!token || !funil) {
+  if (!token || !configFunil) {
     console.error("LeadLovers não configurado: defina LEADLOVERS_API_TOKEN e LEADLOVERS_FUNIL.");
+    return res.status(503).json({ ok: false, erro: "Inscrições temporariamente indisponíveis. Tente novamente em instantes." });
+  }
+
+  let funil;
+  try {
+    funil = (await resolverFunil(configFunil, token, maquina)).codigo;
+  } catch (err) {
+    console.error("Não foi possível resolver o funil do LeadLovers:", err.message);
     return res.status(503).json({ ok: false, erro: "Inscrições temporariamente indisponíveis. Tente novamente em instantes." });
   }
 

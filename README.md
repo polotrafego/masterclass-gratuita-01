@@ -41,9 +41,11 @@ Variáveis de ambiente na Vercel (Settings → Environment Variables):
 | Variável | Obrigatória | O quê |
 |---|---|---|
 | `LEADLOVERS_API_TOKEN` | sim | Token Pessoal da conta (LeadLovers → Configurações → Perfil) |
-| `LEADLOVERS_FUNIL` | sim | Código do funil da masterclass (`EmailSequenceCode`) |
+| `LEADLOVERS_FUNIL` | sim | Funil da masterclass: o nome exato (ex.: `_MasterClass Gratuita OUT26`) ou o código (`EmailSequenceCode`). Pelo nome, a função descobre o código na API |
 | `LEADLOVERS_MAQUINA` | não | Código da máquina. Padrão `730939` (a mesma do site) |
 | `LEADLOVERS_NIVEL` | não | Nível de entrada no funil. Padrão `1` |
+
+Para conferir a configuração sem criar lead: `GET /masterclass/api/lead` responde qual funil foi encontrado.
 
 Sem token ou funil a API responde 503 e o formulário mostra "inscrições temporariamente indisponíveis".
 
