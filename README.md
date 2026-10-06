@@ -57,6 +57,10 @@ com duas regras de rewrite (Project → Settings → Routing, ou `vercel.json`):
 
 ## Eventos de conversão
 
+O **Pixel da Meta da Polo** (`1024769922162683`, enviado pelo Elder, tráfego) está no `<head>` das duas páginas:
+PageView em ambas e Lead na de obrigado.
+
+
 Na página de obrigado (uma vez por sessão): `dataLayer.push({ event: "lead_masterclass" })` e,
 se o Pixel da Meta estiver na página, `fbq("track", "Lead")`. Cliques nos WhatsApp:
 `dataLayer.push({ event: "obrigado_whatsapp", destino: "comunidade" | "duvidas" })`.
