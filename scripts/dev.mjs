@@ -13,7 +13,7 @@ import { fileURLToPath } from "node:url";
 const raiz = fileURLToPath(new URL("..", import.meta.url));
 const pub = join(raiz, "public");
 const porta = Number(process.env.PORT || 5310);
-const tipos = { ".html": "text/html; charset=utf-8", ".css": "text/css", ".js": "text/javascript", ".svg": "image/svg+xml", ".webp": "image/webp", ".png": "image/png", ".json": "application/json" };
+const tipos = { ".html": "text/html; charset=utf-8", ".css": "text/css", ".js": "text/javascript", ".svg": "image/svg+xml", ".webp": "image/webp", ".png": "image/png", ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".json": "application/json" };
 
 createServer(async (req, res) => {
   const url = new URL(req.url, "http://x");
