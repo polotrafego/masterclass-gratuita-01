@@ -11,8 +11,9 @@ public/masterclass/   a página (HTML/CSS/JS estáticos, sem build)
   index.html
   styles.css
   main.js             máscara do WhatsApp, validação antes do envio ao LeadLovers, animações
-  obrigado.html/.js   página de obrigado
+  aula.html/.js       página de entrega: player da gravação, oferta do programa, comunidade
   img/
+edicoes/              versões anteriores guardadas (ex.: a edição ao vivo de OUT26)
 scripts/dev.mjs       servidor local (sem dependências)
 vercel.json
 ```
@@ -40,10 +41,14 @@ O `form001.css` do LeadLovers não é usado: ele trocaria o design.
   formulário 77742, no painel dele**. Ela precisa apontar para
   `https://www.palestras.academy/masterclass/obrigado`.
 
-## Página de obrigado
+## Modo atual: gravação (desde 15/10/2026)
 
-`public/masterclass/obrigado.html` → `/masterclass/obrigado` (fora do Google: `noindex`).
-Botões: comunidade Vida de Palestrante (destaque) e dúvidas com a equipe (discreto).
+A página capta para a **gravação** da masterclass. O LeadLovers manda o lead para `/masterclass/obrigado`,
+que redireciona (307, `vercel.json`) para **`/masterclass/aula`**: player do YouTube (`videoId` no `config.js`),
+oferta do Programa Palestra Além do Palco (WhatsApp em destaque, "Saiba mais" para `/programaonline`) e a
+comunidade Vida de Palestrante. Fora do Google (`noindex`).
+
+A edição ao vivo de OUT26 está em `edicoes/2026-10-13-out26-ao-vivo/` e na tag `edicao-out26-ao-vivo`.
 
 ## Servir em www.palestras.academy/masterclass
 
@@ -58,9 +63,8 @@ com duas regras de rewrite (Project → Settings → Routing, ou `vercel.json`):
 ## Eventos de conversão
 
 O **Pixel da Meta da Polo** (`1024769922162683`, enviado pelo Elder, tráfego) está no `<head>` das duas páginas:
-PageView em ambas e Lead na de obrigado.
+PageView em todas, Lead na página da aula e Contact no clique do WhatsApp do programa.
 
 
-Na página de obrigado (uma vez por sessão): `dataLayer.push({ event: "lead_masterclass" })` e,
-se o Pixel da Meta estiver na página, `fbq("track", "Lead")`. Cliques nos WhatsApp:
-`dataLayer.push({ event: "obrigado_whatsapp", destino: "comunidade" | "duvidas" })`.
+Na página da aula (uma vez por sessão): `dataLayer.push({ event: "lead_masterclass", modo: "gravacao" })`.
+Play no vídeo: `aula_play`. Cliques: `aula_clique` com `destino` = `programa_whatsapp` | `programa_pagina` | `comunidade`.

@@ -8,6 +8,11 @@
       "source": "/",
       "destination": "/masterclass",
       "permanent": false
+    },
+    {
+      "source": "/masterclass/obrigado",
+      "destination": "/masterclass/aula",
+      "permanent": false
     }
   ],
   "headers": [

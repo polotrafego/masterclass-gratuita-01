@@ -1,19 +1,27 @@
 /**
- * Tudo o que muda de uma turma para outra mora aqui.
+ * Tudo o que muda de uma edição para outra mora aqui.
  *
- * Trocar a data ou o horário é editar este arquivo e publicar — nada no HTML
- * precisa ser tocado. Os textos entram em todo elemento com `data-cfg="..."`.
+ * Os textos entram em todo elemento com `data-cfg="..."`; o vídeo e os links
+ * do programa são lidos pela página da aula (aula.js).
  */
 window.MASTERCLASS = {
-  /** Aparece no hero e no rodapé. Ex.: "15/10" ou "Quinta, 15/10". */
+  /** Edição ao vivo (mantidos para a próxima turma ao vivo; a página de gravação não mostra data). */
   data: "13/10",
-
-  /** Ex.: "20h". */
   horario: "19h",
 
-  /**
-   * Link do grupo de WhatsApp da turma, mostrado depois da inscrição.
-   * Vazio = o botão não aparece.
-   */
+  /** Gravação exibida em /masterclass/aula. É o id do vídeo no YouTube. */
+  videoId: "IQlfyiZZhFo",
+  duracao: "1h43",
+
+  /** Oferta do Programa Online (Palestra Além do Palco), mostrada abaixo do vídeo. */
+  programa: {
+    inicio: "22/10, às 17h",
+    pagina: "https://www.palestras.academy/programaonline?utm_source=masterclass&utm_medium=lp-aula&utm_campaign=masterclass-out26",
+    whatsapp: "https://wa.link/i1trg9",
+  },
+
+  comunidade: "https://chat.whatsapp.com/BMyBc3YBDUT1S1EFiSJLeW",
+
+  /** Sem uso no modo gravação. */
   grupoWhatsapp: "",
 };

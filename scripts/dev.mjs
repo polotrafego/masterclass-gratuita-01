@@ -38,6 +38,8 @@ createServer(async (req, res) => {
   }
 
   if (caminho === "/") { res.writeHead(302, { Location: "/masterclass" }); return res.end(); }
+  // Mesmo redirecionamento do vercel.json: o LeadLovers manda o lead para /obrigado.
+  if (caminho === "/masterclass/obrigado") { res.writeHead(307, { Location: "/masterclass/aula" + url.search }); return res.end(); }
   let arquivo = normalize(join(pub, caminho));
   if (!arquivo.startsWith(pub)) { res.writeHead(403); return res.end(); }
   try {
